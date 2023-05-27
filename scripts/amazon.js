@@ -41,7 +41,7 @@ products.forEach((product) => {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart js-added-to-cart-${product.id}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
@@ -56,6 +56,7 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
+const addedMessageTimeouts = {};
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
@@ -81,7 +82,18 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     });
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-    console.log(cart);
-    console.log(cartQuantity);
+    console.log(cart); // to do : erase this after the challenges are done
+
+    let message = document.querySelector(`.js-added-to-cart-${productId}`)
+    message.style.opacity = 1;
+    // clearTimeout();
+    let messageTimeout = setTimeout(() => {
+      if(addedMessageTimeouts[productId]) {
+        clearTimeout(addedMessageTimeouts[productId]);
+      }
+      message.style.opacity = 0;
+    }, 2000)
+
+    addedMessageTimeouts[productId] = messageTimeout;
   });
 });
